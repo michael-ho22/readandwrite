@@ -1,31 +1,64 @@
 import csv
 
 salesreport = open('sales.csv', 'r')
-
 csv_file = csv.reader(salesreport)
-
-sales = open('salesreport.csv', 'w', newline = '')
-
-
-lst = {}
-
 next(csv_file)
 
+sales = open('salesreport.csv', 'w', newline = '')
+salestotal = csv.writer(sales)
+
+lst = []
+
 for record in csv_file:
-    customer_id = record[0]
+    
     total = float(record[3]) + float(record[4]) + float(record[5])
+    customer_id = record [0]
+    in_record = False
 
-    if customer_id in lst:
-        lst[customer_id] += total
-    else:
-        lst[customer_id] = total
+    for x in lst:
+        if x[0] == customer_id:
+            x[1] += total
+            in_record = True
 
-totalsales = csv.writer(sales)
+    if in_record == False:
+        lst.append([customer_id, total])
 
-totalsales.writerow(['Customer ID', ' Total'])
+sales.write('Customer ID, Total\n')
+        
+for customer_id, total in lst:
+    salestotal.writerow([customer_id,  round(total, 2)])
 
-for customer_id, total in lst.items():
-    totalsales.writerow([customer_id,  round(total,2)])
+#######################################################################
+
+# import csv
+
+# salesreport = open('sales.csv', 'r')
+
+# csv_file = csv.reader(salesreport)
+
+# sales = open('salesreport.csv', 'w', newline = '')
+
+# lst = {}
+
+# next(csv_file)
+
+# for record in csv_file:
+#     customer_id = record[0]
+#     total = float(record[3]) + float(record[4]) + float(record[5])
+
+#     if customer_id in lst:
+#         lst[customer_id] += total
+#     else:
+#         lst[customer_id] = total
+
+# totalsales = csv.writer(sales)
+
+# totalsales.writerow(['Customer ID', ' Total'])
+
+# for customer_id, total in lst.items():
+#     totalsales.writerow([customer_id,  round(total,2)])
+
+###########################################################################
 
 # atotal = 0
 # btotal = 0
